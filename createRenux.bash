@@ -6,6 +6,15 @@
 # This program is free software under the GPL license, please 
 # see the license.txt and gpl.txt files in the root directory
 
+i=0
+check() {
+  i=$(($i+1))
+  echo "****************************************************"
+  echo "This is check point $i, press enter to continue....*"
+  echo "****************************************************"
+  read dummy
+}
+
 echo ""
 echo "Renux version 1.0 buildscript"
 echo ""
@@ -17,6 +26,7 @@ PATH=$PWD/createRenuxHelpScripts:$PATH
 # Source variables and functions from createRenux*.bash files
 source $PWD/createRenuxHelpScripts/createRenuxVariables.bash
 source $PWD/createRenuxHelpScripts/createRenuxFunctions.bash
+source $PWD/createRenuxHelpScripts/createFS.bash
 source $PWD/createRenuxHelpScripts/configureCompile.bash
 source $PWD/createRenuxHelpScripts/createSdImage.bash
 
@@ -32,27 +42,37 @@ systemSetup.installStatus
 systemSetup.buildDepStatus
 
 # Create build directories
+echo "Creating directories..."
 createRenux.createDirectories
 
 # Get source code
+echo ""
 echo "Downloading source code"
+echo ""
 
 srcPackages=("x-loader" "u-boot" "linux")
 for buildPackage in "${srcPackages[@]}" ; do
-  if [ ! -d "$src/${crossSrcPrefix}_${buildPackage}" ] ; then
+  if [ ! -d "Renux_${buildPackage}" ] ; then
     echo "Downloading ${buildPackage} sources"
     git clone git://github.com/Scorpiion/Renux_${buildPackage}.git
   else
     echo "${buildPackage} sources already downloaded, checking for changes"
-    git fetch git://github.com/Scorpiion/Renux_cross_${buildPackage}.git
+    git fetch git://github.com/Scorpiion/Renux_${buildPackage}.git
   fi
   echo ""
 done
 
-exit
-
 # Create filesystem
-createRenux.createFS
+createFS.createRootfsDir
+createFS.debootstrapStage1
+createFS.installQemuArmStatic
+createFS.mountProcSys
+createFS.debootstrapStage2
+createFS.installRenuxFiles
+createFS.runPostInstalltionCmds
+createFS.aptUpdate
+createFS.createUsers
+createFS.umountProcSys
 
 # Configure and compile x-loader
 configureCompile.checkArgs -n x-loader -d omap3530beagle_config -c -i $rootfs
@@ -61,8 +81,8 @@ configureCompile.enterTargetDir
 configureCompile.clean
 configureCompile.configure
 configureCompile.compile
-configureCompile.leaveTargetDir
 configureCompile.install
+configureCompile.leaveTargetDir
 
 # Configure and compile u-boot
 configureCompile.checkArgs -n u-boot -d omap3_beagle_config -c -i $rootfs
@@ -71,8 +91,8 @@ configureCompile.enterTargetDir
 configureCompile.clean
 configureCompile.configure
 configureCompile.compile
-configureCompile.leaveTargetDir
 configureCompile.install
+configureCompile.leaveTargetDir
 
 # Configure and compile Linux kernel
 configureCompile.checkArgs -n linux -d omap3_renux_defconfig -c -i $rootfs
@@ -81,18 +101,18 @@ configureCompile.enterTargetDir
 configureCompile.clean
 configureCompile.configure
 configureCompile.compile
-configureCompile.leaveTargetDir
 configureCompile.install
+configureCompile.leaveTargetDir
 
 # Create SD-CARD image and install Renux
-echo $output | createSdImage.getImageSize
+echo $imageSize | createSdImage.getImageSize
 createSdImage.createEmptyImage
 createSdImage.createPartitionTable
 createSdImage.createDeviceMaps
 createSdImage.formatImage
 createSdImage.mountImage
-createSdImage.installBoot() $rootfs/boot
-createSdImage.installRootfs() $rootfs
+createSdImage.installBoot $rootfs/boot
+createSdImage.installRootfs $rootfs
 createSdImage.umountImage
 
 # Leave build directory (entered in "createRenux.createDirectories")
@@ -100,5 +120,4 @@ createRenux.leaveBuild
 
 echo ""
 echo "Your Renux image is now ready!"
-
 
