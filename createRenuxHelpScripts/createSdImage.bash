@@ -23,7 +23,7 @@ createSdImage.createPartitionTable() {
   echo ""
   echo "Calculating cylinder size..."
   byteSize=$(du -b renux_${imageSize}_gb.img | cut -f 1)
-  cylinderSize=$(($byteSize/255/63/512))
+  cylinderSize=$(( $byteSize / 255 / 63 / 512 ))
 
   if [ $cylinderSize -lt 0 ] || [ $cylinderSize -eq 0 ] 
   then
@@ -69,16 +69,16 @@ createSdImage.installBoot() {
   echo "Installing files to boot partition on image..."
   for parameter in $*
   do 
-    sudo cp -r $parameter Boot
+    sudo cp -r $parameter/* Boot
   done
 }
 
 createSdImage.installRootfs() {
   echo ""
-  echo "Installing files to boot partition on image..."
+  echo "Installing files to rootfs partition on image..."
   for parameter in $*
   do 
-    sudo cp -r $parameter Renux
+    sudo cp -r $parameter/* Renux
   done
 }
 

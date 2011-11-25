@@ -87,6 +87,8 @@ createRenux.checkArgs() {
 	;;
     esac
   done
+  # Reset variable OPTIND (otherwise the scripts arguments stays the same in subsequent calls)
+  OPTIND=1
 
   if [ ! -z "$output" ] ; then
     if [ $(echo $output | awk -F ":" {'print $2'}) -gt 0 ] ; then 
@@ -106,17 +108,24 @@ createRenux.listDefault() {
 }
 
 createRenux.createDirectories() {
-  # Create build directory and mount directory for the filesystems
-  if [ -d "$buildDir" ]; then
-    rm -rf $buildDir
+  mkdir -p $buildDir
+  cd $buildDir	
+  if [ -d "$BOOT_MOUNT" ] || [ -d "$ROOTFS_MOUNT" ] ; then
+    isBootMounted=$(echo $(cat /etc/mtab | grep $BOOT_MOUNT))
+    isRootfsMounted=$(echo $(cat /etc/mtab | grep $ROOTFS_MOUNT))
+
+    if [ "${#isBootMounted}" -gt 0 ] ; then
+      sync
+      sudo umount $BOOT_MOUNT
+    fi
+    if [ "${#isBootMounted}" -gt 0 ] ; then
+      sync
+      sudo umount $ROOTFS_MOUNT
+    fi
+
+    sudo rm -rf $BOOT_MOUNT
+    sudo rm -rf $ROOTFS_MOUNT
   fi
-  mkdir $buildDir
-  cd $buildDir
-  sync
-  sudo umount $BOOT_MOUNT
-  sudo umount $ROOTFS_MOUNT
-  sudo rm -rf $BOOT_MOUNT
-  sudo rm -rf $ROOTFS_MOUNT
   sudo mkdir -p $BOOT_MOUNT
   sudo mkdir -p $ROOTFS_MOUNT
 }
@@ -125,40 +134,5 @@ createRenux.leaveBuild() {
   cd ..
 }
 
-createRenux.mountFS() {
-  echo ""
-  echo "Mount filesystems..."
-  sudo mount -t vfat ${SD_CARD_DEV}1 $BOOT_MOUNT
-  sudo mount -t ext3 ${SD_CARD_DEV}2 $ROOTFS_MOUNT
-}
-
-createRenux.unmountFS() {
-  echo ""
-  echo "Unounting SD-CARD and flushing file system buffers"
-  echo "(this part can take some time...)"
-  sudo umount $BOOT_MOUNT
-  sudo umount $ROOTFS_MOUNT
-  sync
-  sudo rmdir $BOOT_MOUNT
-  sudo rmdir $ROOTFS_MOUNT
-}
-
-createRenux.installBootFiles() {
-  echo "Install MLO and u-boot to bootpartition"
-  echo ""
-  sudo mv $ROOTFS_MOUNT/MLO $BOOT_MOUNT
-  sudo mv $ROOTFS_MOUNT/u-boot.bin $BOOT_MOUNT
-}
-
-createRenux.createFS() {
-  echo ""
-  echo "Starting script to create filesystem..."
-  createFS.bash
-}
-
-createRenux.installFS() {
-  # Installing filesystem...
-  sudo tar -jxvf armel-squeeze-rootfs.tar.bz -C $ROOTFS_MOUNT
-}
 
 

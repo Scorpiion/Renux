@@ -146,7 +146,7 @@ configureCompile.checkArgs() {
 	;;
       i)
 	doInstall="y"
-	projectInstall=$buidDir/$OPTARG
+	projectInstall=$OPTARG
 	;;
       l)
 	configureCompile.listTargetsAndDefconfig
@@ -158,6 +158,8 @@ configureCompile.checkArgs() {
 	;;
     esac
   done
+  # Reset variable OPTIND (otherwise the scripts arguments stays the same in subsequent calls)
+  OPTIND=1
 
   if [[ -z "$configureCompile" ]] && [[ -z "$doInstall" ]]
   then
@@ -212,19 +214,22 @@ configureCompile.install() {
   echo "Installing $targetName..."
   sleep 1
 
-  echo "projectInstall = $projectInstall"
-
+  mkdir -p $projectInstall/boot/
   case $targetName in
     x-loader)
-      sudo cp MLO $projectInstall
+      echo ""
+      echo "Installing x-loader..."
+      sudo cp MLO $projectInstall/boot/
       ;;
     u-boot)
-      sudo cp u-boot.bin $projectInstall
+      echo ""
+      echo "Installing u-boot..."
+      sudo cp u-boot.bin $projectInstall/boot/
       ;;
     linux)
-      sudo cp arch/arm/boot/uImage $projectInstall/uImage
-      sudo mkdir -p $projectInstall/boot/
-      sudo cp arch/arm/boot/uImage $projectInstall/boot/uImage
+      echo ""
+      echo "Installing uImage..."
+      sudo cp arch/arm/boot/uImage $projectInstall/boot/
 
       echo ""
       echo "Installing modules..."
@@ -244,7 +249,7 @@ configureCompile.install() {
 configureCompile.leaveTargetDir() {
   echo ""
   echo "Done, leaving \"$srcDir\"..."
-  cd $startDir
+  cd $buildDir
 }
 
 # Function calls to run script independently
