@@ -23,6 +23,7 @@ export installPkg="$runCmd /usr/bin/apt-get -y install "
 export files="../renux_fs"
 export extraPkg="\
 build-essential, \
+locales, \
 wireless-tools, \
 zd1211-firmware, \
 wpasupplicant, \

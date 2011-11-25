@@ -7,12 +7,10 @@
 # see the license.txt and gpl.txt files in the root directory
 
 # Script variables
-export BOOT_MOUNT="/media/usb1"
-export ROOTFS_MOUNT="/media/usb2"
+export BOOT_MOUNT="/media/Boot"
+export ROOTFS_MOUNT="/media/Renux"
 export CC="arm-linux-gnueabi-"
-export defconfig="omap2plus_defconfig"
 export JN=18
-export isPartition="n"
 
 echo ""
 echo "Copying uImage to $BOOT_MOUNT/uImage and $ROOTFS_MOUNT/boot/uImage..."
