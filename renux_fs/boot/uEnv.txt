@@ -1,0 +1,16 @@
+console='ttyO2,115200n8'
+mpurate='auto'
+camera='lbcm5m03'
+root='/dev/mmcblk0p2 rw '
+rootfstype='ext3 rootwait'
+
+omapfbmode='dvi:hd720'
+omapfbvram='0:8M,1:4M,2:4M '
+defaultdisplay='dvi'
+buddy='none'
+
+vram='32M'
+dvimode='hd720 omapfb.vram=0:8M,1:4M,2:4M'
+
+mmcargs=setenv bootargs console=${console} mpurate=${mpurate} buddy=${buddy} camera=${camera} vram=${vram} omapfb.mode=${omapfbmode} omapfb.vram=${omapfbvram} omapdss.def_disp=${defaultdisplay} root=${root} rootfstype=${rootfstype} testVar=abc
+uenvcmd=run loaduimage; run mmcboot 
