@@ -1,0 +1,8 @@
+# FSTAB configured by Robert
+
+# <file system> <mount point>   <type>  <options> 	      <dump>  <pass>
+/dev/mmcblk0p2	/               ext3    errors=remount-ro 	0       1
+proc            /proc           proc    nodev,noexec,nosuid 	0       0
+sysfs           /sys            sysfs   nodev,noexec,nosuid 	0       0
+
+

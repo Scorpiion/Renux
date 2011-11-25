@@ -1,0 +1,6 @@
+Renux version 0.2
+
+Renux is a Debian Linux distro aim at embedded systems, specifically created for TI's ARM based OMAP3 platforms. It is tested for the Beagleboard xM and Gumstix Overo development boards.
+
+Renux was created mostly because it was fun and as an educational experience.
+
