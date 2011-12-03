@@ -24,6 +24,7 @@ export renux_fs="../renux_fs"
 export extraPkg="\
 locales, \
 vim-tiny, \
+openssh-server, \
 "
 
 # build-essential, \
@@ -34,7 +35,6 @@ vim-tiny, \
 # xorg, \
 # kdebase, \
 # vlc, \
-# openssh-server, \
 # iptables, \
 # wget, \
 # less, \
