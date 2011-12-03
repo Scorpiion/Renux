@@ -16,26 +16,26 @@ export isPartition="n"
 
 echo "Clean kernel..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} mrproper CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} mrproper
 
 echo "Configure kernel..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} omap3_renux_defconfig CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} $defconfig
 
 echo "Menuconfig..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} menuconfig CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} menuconfig 
 
 echo "Compile kernel..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} uImage CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} uImage 
 
 echo "Compile modules..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} modules CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} modules 
 
 echo "Compile firmware..."
 sleep 1
-make -j $JN ARCH=arm CROSS_COMPILE=${CC} firmware CONFIG_DEBUG_SECTION_MISMATCH=y
+make -j $JN ARCH=arm CROSS_COMPILE=${CC} firmware 
 
 
