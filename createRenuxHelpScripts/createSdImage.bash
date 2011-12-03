@@ -16,7 +16,7 @@ createSdImage.getImageSize() {
 createSdImage.createEmptyImage() {
   echo ""
   echo "Creating empty image file \"renux_${imageSize}_gb.img\"..."
-  dd if=/dev/zero of=./renux_${imageSize}_gb.img bs=32M count=$(($imageSize*32))
+  dd if=/dev/zero of=./renux_${imageSize}_gb.img bs=32MB count=$(($imageSize*32))
 }
 
 createSdImage.createPartitionTable() {
