@@ -112,23 +112,25 @@ imageManager.checkDevice() {
   done
 }
 
-imageManager.procesImage() {
+imageManager.processImage() {
   if [ "$action" == "write" ] ; then
+    echo "Writing image to SD-CARD..."
     imageManager.writeImage
   elif [ "$action" == "save" ] ; then
     echo "Saving image from SD-CARD..."
-  else
     imageManager.saveImage
+  else
+    imageManager.usage
     exit 1
   fi
 }
 
 imageManager.writeImage() {
-  dd if=$imgName of=$device bs=${bs} >progress.txt 2>&1 & pid=$!
+  dd if=$imgName of=$device bs=${bs} >progress.txt 2>&1 & pid=${!}
 }
 
 imageManager.saveImage() {
-  dd if=$device of=$imgName bs=${bs} >progress.txt 2>&1 & pid=$!
+  dd if=$device of=./$imgName bs=${bs} >progress.txt 2>&1 & pid=${!}
 }
 
 imageManager.checkProcess() {
@@ -161,5 +163,6 @@ imageManager.showProgress() {
 }
 
 imageManager.checkArgs $@
-imageManager.procesImage
+imageManager.processImage
 imageManager.showProgress
+
