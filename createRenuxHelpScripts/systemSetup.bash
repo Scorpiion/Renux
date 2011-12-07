@@ -15,6 +15,7 @@ qemu-arm-static \
 qemu-kvm-extras \
 fakeroot \
 binfmt-support \
+ccache \
 )
 buildDepPackages=(\
 gcc-4.5 \
