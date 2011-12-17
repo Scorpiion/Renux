@@ -6,17 +6,8 @@
 # This program is free software under the GPL license, please 
 # see the license.txt and gpl.txt files in the root directory
 
-i=0
-check() {
-  i=$(($i+1))
-  echo "****************************************************"
-  echo "This is check point $i, press enter to continue....*"
-  echo "****************************************************"
-  read dummy
-}
-
 echo ""
-echo "Renux version 1.0 buildscript"
+echo "Renux version 1.3 buildscript"
 echo ""
 sleep 1
 
@@ -50,14 +41,25 @@ echo ""
 echo "Downloading source code"
 echo ""
 
-srcPackages=("x-loader" "u-boot" "linux")
+srcPackages=("x-loader" "u-boot" "Kernel")
 for buildPackage in "${srcPackages[@]}" ; do
   if [ ! -d "Renux_${buildPackage}" ] ; then
     echo "Downloading ${buildPackage} sources"
     git clone git://github.com/Scorpiion/Renux_${buildPackage}.git
+    if [ "$buildPackage" = "Kernel" ] ; then
+      cd Renux_Kernel 
+      git submodule init 
+      git submodule update 
+      cd ..
+    fi
   else
     echo "${buildPackage} sources already downloaded, checking for changes"
-    git fetch git://github.com/Scorpiion/Renux_${buildPackage}.git
+    git pull git://github.com/Scorpiion/Renux_${buildPackage}.git
+    if [ "$buildPackage" = "Kernel" ] ; then
+      cd Renux_Kernel 
+      git submodule update 
+      cd ..
+    fi
   fi
   echo ""
 done
@@ -73,7 +75,7 @@ createFS.runPostInstalltionCmds
 createFS.aptUpdate
 createFS.createUsers
 createFS.umountProcSys
-
+ 
 # Configure and compile x-loader
 configureCompile.checkArgs -n x-loader -d omap3530beagle_config -c -i $rootfs
 configureCompile.setVars
@@ -83,7 +85,7 @@ configureCompile.configure
 configureCompile.compile
 configureCompile.install
 configureCompile.leaveTargetDir
-
+ 
 # Configure and compile u-boot
 configureCompile.checkArgs -n u-boot -d omap3_beagle_config -c -i $rootfs
 configureCompile.setVars
@@ -95,14 +97,12 @@ configureCompile.install
 configureCompile.leaveTargetDir
 
 # Configure and compile Linux kernel
-configureCompile.checkArgs -n linux -d omap3_renux_defconfig -c -i $rootfs
-configureCompile.setVars
-configureCompile.enterTargetDir
-configureCompile.clean
-configureCompile.configure
-configureCompile.compile
-configureCompile.install
-configureCompile.leaveTargetDir
+buildKernel.bash
+cp output/boot/uImage $rootfs/boot
+cp -r output/lib $rootfs
+cp linux-headers.tar.gz ../..
+cp renux_kernel.tar.gz ../..
+cd ..
 
 # Create SD-CARD image and install Renux
 echo $imageSize | createSdImage.getImageSize
