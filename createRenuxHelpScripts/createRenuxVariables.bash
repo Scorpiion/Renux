@@ -25,6 +25,7 @@ export extraPkg="\
 locales, \
 vim-tiny, \
 openssh-server, \
+sudo, \
 "
 
 # build-essential, \
