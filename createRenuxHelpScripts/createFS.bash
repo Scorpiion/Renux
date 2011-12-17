@@ -14,9 +14,6 @@ createFS.createRootfsDir() {
 createFS.debootstrapStage1() {
   # Create filesystem
   echo "Starting to build filesystem with debootstrap..."
-  echo ""
-  echo 'sudo debootstrap --verbose --foreign --include "$extraPkg" --arch $arch --components "main,contrib,non-free" $dist $rootfs $debianMirror'
-  echo ""
   sudo debootstrap --verbose --foreign --include "$extraPkg" --arch $arch --components "main,contrib,non-free" $dist $rootfs $debianMirror
 }
 
