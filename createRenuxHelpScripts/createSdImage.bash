@@ -14,15 +14,17 @@ createSdImage.getImageSize() {
 }
 
 createSdImage.createEmptyImage() {
+  export imageName=$(echo "renux_${imageSize}_gb_$(date +%Y-%m-%d_%H-%M-%S).img")
+
   echo ""
-  echo "Creating empty image file \"renux_${imageSize}_gb.img\"..."
-  dd if=/dev/zero of=./renux_${imageSize}_gb.img bs=32MB count=$(($imageSize*32))
+  echo "Creating empty image file \"$imageName\"..."
+  dd if=/dev/zero of=./$imageName bs=32MB count=$(($imageSize*32))
 }
 
 createSdImage.createPartitionTable() {
   echo ""
   echo "Calculating cylinder size..."
-  byteSize=$(du -b renux_${imageSize}_gb.img | cut -f 1)
+  byteSize=$(du -b $imageName | cut -f 1)
   cylinderSize=$(( $byteSize / 255 / 63 / 512 ))
 
   if [ $cylinderSize -lt 0 ] || [ $cylinderSize -eq 0 ] 
@@ -35,16 +37,16 @@ createSdImage.createPartitionTable() {
   {
   echo ,9,0x0C,*
   echo ,,,-
-  } | sudo sfdisk -D -H 255 -S 63 -C $cylinderSize ./renux_${imageSize}_gb.img 
+  } | sudo sfdisk -D -H 255 -S 63 -C $cylinderSize ./$imageName
   sleep 1
 }
 
 createSdImage.createDeviceMaps() {
   echo ""
   echo "Creating device maps from partition table"
-  bootPartition=$(sudo kpartx -l ./renux_${imageSize}_gb.img | awk 'NR == 1 {print $1}')
-  rootfsPartition=$(sudo kpartx -l ./renux_${imageSize}_gb.img | awk 'NR == 2 {print $1}')
-  sudo kpartx -a ./renux_${imageSize}_gb.img 
+  bootPartition=$(sudo kpartx -l ./$imageName | awk 'NR == 1 {print $1}')
+  rootfsPartition=$(sudo kpartx -l ./$imageName | awk 'NR == 2 {print $1}')
+  sudo kpartx -a ./$imageName
 }
 
 createSdImage.formatImage() {
@@ -88,7 +90,8 @@ createSdImage.umountImage() {
   sudo umount /dev/mapper/loop0p1
   sudo umount /dev/mapper/loop0p2
   sync
-  sudo kpartx -d ./renux_${imageSize}_gb.img
+  sudo kpartx -d ./$imageName
   sudo rmdir Boot
   sudo rmdir Renux
 }
+
