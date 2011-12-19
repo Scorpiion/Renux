@@ -105,7 +105,7 @@ cp output/linux-headers.tar.gz ..
 cp output/renux_kernel.tar.gz ..
 cd ..
 
-# Create SD-CARD image and install Renux
+# Create SD-CARD image and install Renux on image
 echo $imageSize | createSdImage.getImageSize
 createSdImage.createEmptyImage
 createSdImage.createPartitionTable
@@ -115,6 +115,13 @@ createSdImage.mountImage
 createSdImage.installBoot $rootfs/boot
 createSdImage.installRootfs $rootfs
 createSdImage.umountImage
+
+# Create tar.gz packages of Renux
+cd armel-squeeze-rootfs
+sudo tar -czf ../renux_ext_partition.tar.gz *
+cd boot
+sudo tar -czf ../../renux_fat_partition.tar.gz *
+cd ../...
 
 # Leave build directory (entered in "createRenux.createDirectories")
 createRenux.leaveBuild
