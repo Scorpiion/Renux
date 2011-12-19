@@ -4,17 +4,16 @@ export SD_CARD_DEV=""
 export BOOT_MOUNT="/media/Boot"
 export ROOTFS_MOUNT="/media/Renux"
 export buildDir=$PWD/"Renux_build"
-export version="0.2"
+export version="0.3"
 export debianMirror="http://ftp.se.debian.org/debian"
 
 export hostName="Renux"
 export extraUsers="renux"
-export includePkg="pacakges"
-export excludePkg="pacakges"
+export includePkg="packages"
+export excludePkg="packages"
 export output="SD:4"
 export imageSize="4"
 
-export username="robert"
 export arch=armel
 export dist=squeeze
 export rootfs=$buildDir/$arch-$dist-rootfs
