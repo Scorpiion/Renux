@@ -9,7 +9,6 @@
 echo ""
 echo "Renux version 1.3 buildscript"
 echo ""
-sleep 1
 
 # Add scripts directory temporary to PATH (also for the root user)
 PATH=$PWD/createRenuxHelpScripts:$PATH
@@ -23,6 +22,9 @@ source $PWD/createRenuxHelpScripts/createSdImage.bash
 
 # Check commandline arguments
 createRenux.checkArgs $@
+
+# Show parameter values
+createRenux.listParameters
 
 # Run systemsetup
 echo "Check so that the system has all packages needed installed"
