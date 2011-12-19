@@ -87,6 +87,12 @@ createFS.createUsers() {
   done
 }
 
+createFS.changeFilePremisions() {
+  # Change file premission so that not root owns the filesystem (debootstrap needs to run as root)
+  sudo chown -R $USER:$USER $rootfs
+}
+
 # Setup language settings
 #$installPkg console-data
 #runCmd ...
+
