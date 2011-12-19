@@ -2,4 +2,5 @@ Todo list for Renux:
 
 * Fix so the user only have to type it's password once, now sometimes it you have to do it again if sudo have timed out
 * Fix so that all parameter work for createRenux.bash
+* Check if "build-dep gcc-4.5" is really needed? Maybe it can be removed as dependency.
 
