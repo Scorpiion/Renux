@@ -97,11 +97,12 @@ configureCompile.install
 configureCompile.leaveTargetDir
 
 # Configure and compile Linux kernel
-buildKernel.bash
-cp output/boot/uImage $rootfs/boot
-cp -r output/lib $rootfs
-cp linux-headers.tar.gz ../..
-cp renux_kernel.tar.gz ../..
+cd Renux_Kernel
+./buildKernel.bash
+sudo cp output/boot/uImage $rootfs/boot
+sudo cp -r output/lib $rootfs
+cp output/linux-headers.tar.gz ..
+cp output/renux_kernel.tar.gz ..
 cd ..
 
 # Create SD-CARD image and install Renux
