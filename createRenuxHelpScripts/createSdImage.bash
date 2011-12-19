@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Renux imagetool"
-echo ""
-
 createSdImage.getImageSize() {
   echo -n "Enter the desired image size (in gigabytes): "
   read imageSize
