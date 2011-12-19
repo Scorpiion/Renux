@@ -68,7 +68,8 @@ createFS.runPostInstalltionCmds() {
   $runCmd 'ln -s /usr/bin/vim-tiny /usr/bin/vim'
 
   # Allow non root users to use Xorg
-  sudo echo "allowed_users=anybody" >> $rootfs/etc/X11/Xwrapper.config
+  sudo mkdir -p $rootfs/etc/X11
+  sudo echo "allowed_users=console" > $rootfs/etc/X11/Xwrapper.config
 }
 
 createFS.aptUpdate() {
