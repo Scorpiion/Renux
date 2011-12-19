@@ -14,7 +14,7 @@ formated SD-CARD or as SD-CARD image files, that can be copied to a SD-CARD with
 Usage: $0 [options]"
 
 Options:
-  -h,                   Host name (default "Renux")
+  -n,                   Host name (default "Renux")
   -u,                   Extra users (except root), can be a list seperated by "," with no spaces
   -i,                   List of extra packages to include (debian packages)
   -e,                   List of packages to exclude (debian packages)
@@ -97,7 +97,7 @@ createRenux.checkArgs() {
   fi
 }
 
-createRenux.listDefault() {
+createRenux.listParameters() {
   echo "Default values:"
   echo -e "Hostname:\t\t $hostName"
   echo -e "Extra users:\t\t $extraUsers"
@@ -105,6 +105,9 @@ createRenux.listDefault() {
   echo -e "Excluded pacakges:\t $excludePkg"
   echo -e "Output:\t\t\t $output"
   echo ""
+  echo "Press enter to continue or \"Ctrl + c\" to exit and change parameters"
+  echo "(see help with \"./createRenux.bash -h\")"
+  read dummy
 }
 
 createRenux.createDirectories() {
