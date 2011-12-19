@@ -75,6 +75,7 @@ createFS.runPostInstalltionCmds
 createFS.aptUpdate
 createFS.createUsers
 createFS.umountProcSys
+createFS.changeFilePremisions
  
 # Configure and compile x-loader
 configureCompile.checkArgs -n x-loader -d omap3530beagle_config -c -i $rootfs
@@ -99,8 +100,8 @@ configureCompile.leaveTargetDir
 # Configure and compile Linux kernel
 cd Renux_Kernel
 ./buildKernel.bash
-sudo cp output/boot/uImage $rootfs/boot
-sudo cp -r output/lib $rootfs
+cp output/boot/uImage $rootfs/boot
+cp -r output/lib $rootfs
 cp output/linux-headers.tar.gz ..
 cp output/renux_kernel.tar.gz ..
 cd ..
@@ -118,10 +119,10 @@ createSdImage.umountImage
 
 # Create tar.gz packages of Renux
 cd armel-squeeze-rootfs
-sudo tar -czf ../renux_ext_partition.tar.gz *
+tar -czf ../renux_ext_partition.tar.gz *
 cd boot
-sudo tar -czf ../../renux_fat_partition.tar.gz *
-cd ../...
+tar -czf ../../renux_fat_partition.tar.gz *
+cd ../..
 
 # Leave build directory (entered in "createRenux.createDirectories")
 createRenux.leaveBuild
