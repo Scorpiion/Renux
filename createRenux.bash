@@ -110,6 +110,8 @@ cd ..
 
 # Configure and build camera tools
 cd Renux_Camera_Tools
+git submodule init
+git submodule update
 mkdir tmp
 tar -zxf ../Renux_Kernel/output/linux-headers.tar.gz -C tmp 
 ./buildTools.bash $PWD/tmp ../armel-squeeze-rootfs/
