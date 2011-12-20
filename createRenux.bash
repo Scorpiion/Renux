@@ -114,7 +114,8 @@ git submodule init
 git submodule update
 mkdir tmp
 tar -zxf ../Renux_Kernel/output/linux-headers.tar.gz -C tmp 
-./buildTools.bash $PWD/tmp ../armel-squeeze-rootfs/
+unset CC
+./buildTools.bash $PWD/tmp/ ../armel-squeeze-rootfs/
 cd ..
 
 # Create SD-CARD image and install Renux on image
