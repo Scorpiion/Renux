@@ -43,7 +43,7 @@ echo ""
 echo "Downloading source code"
 echo ""
 
-srcPackages=("x-loader" "u-boot" "Kernel")
+srcPackages=("x-loader" "u-boot" "Kernel" "Camera_Tools")
 for buildPackage in "${srcPackages[@]}" ; do
   if [ ! -d "Renux_${buildPackage}" ] ; then
     echo "Downloading ${buildPackage} sources"
@@ -106,6 +106,13 @@ cp output/boot/uImage $rootfs/boot
 cp -r output/lib $rootfs
 cp output/linux-headers.tar.gz ..
 cp output/renux_kernel.tar.gz ..
+cd ..
+
+# Configure and build camera tools
+cd Renux_Camera_Tools
+mkdir tmp
+tar -zxf ../Renux_Kernel/output/linux-headers.tar.gz -C tmp 
+./buildTools.bash $PWD/tmp ../armel-squeeze-rootfs/
 cd ..
 
 # Create SD-CARD image and install Renux on image
