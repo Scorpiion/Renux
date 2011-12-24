@@ -65,7 +65,7 @@ createFS.runPostInstalltionCmds() {
   $runCmd 'mknod -m 660 /dev/ttyS3 c 4 69'
 
   # Create softlinks for vim
-  $runCmd 'ln -s /usr/bin/vim-tiny /usr/bin/vim'
+  $runCmd 'cd /usr/bin && ln -s vim.tiny vim'
 
   # Allow non root users to use Xorg
   sudo mkdir -p $rootfs/etc/X11
