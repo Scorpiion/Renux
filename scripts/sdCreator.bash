@@ -107,6 +107,7 @@ sdCreator.createPartitionTable() {
 
 sdCreator.formatImage() {
   sdCreator.umountImage
+  sudo partprobe
   echo ""
   echo "Formating image..."
   sudo mkfs.vfat -F 32 -n "Boot" ${device}1
