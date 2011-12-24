@@ -4,4 +4,5 @@ Todo list for Renux:
 * Fix so that all parameter work for createRenux.bash
 * Check if "build-dep gcc-4.5" is really needed? Maybe it can be removed as dependency.
 * Check what kernel setting it is that makes Beagleboard to fail to reboot? (something with MUX is suspected)
+* Check user premissions of generated files, the ownership of all files in "armel-squeeze-rootfs" are given to the $USER in the build script, to avoid having to be root to edit some files, but maybe some files has to be owned by root, otherwise it does not work well later when the new system is running and files are owned by a 100x user id, instead of root's id that is always the same.
 
