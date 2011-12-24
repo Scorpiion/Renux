@@ -8,7 +8,7 @@
 
 arch=armel
 dist=squeeze
-rootfs=$PWD/$arch-$dist-rootfs
+rootfs=$PWD/Renux_build/$arch-$dist-rootfs
 runCmd="chroot $rootfs "
 
 # Check if root
