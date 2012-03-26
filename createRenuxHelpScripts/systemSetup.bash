@@ -11,7 +11,7 @@ automake \
 kpartx \
 debootstrap \
 qemu \
-qemu-arm-static \
+qemu-kvm-extras-static \
 qemu-kvm-extras \
 fakeroot \
 binfmt-support \
